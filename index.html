@@ -1,0 +1,188 @@
+<!-- FILE: index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>to my queen ❤</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#d6336c; --muted:#9aa6b2; --glass: rgba(255,255,255,0.03);
+      --max-width:900px; --radius:12px; --gutter:18px;
+    }
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{background:linear-gradient(180deg,#071021 0%, #0f1724 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:32px}
+    .wrap{max-width:var(--max-width);width:100%;gap:var(--gutter);display:flex;flex-direction:column;padding-top:20px}
+    header{display:flex;align-items:center;gap:12px;position:relative;z-index:10001}
+    h1{font-size:clamp(20px,4vw,34px);margin:0;letter-spacing:0.2px}
+    .heart{background:linear-gradient(90deg,#ff6b9a,#ffb199);padding:10px;border-radius:999px;box-shadow:0 6px 30px rgba(214,51,108,0.12)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:24px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .poem{line-height:1.35;font-size:17px;white-space:pre-wrap;color:#f0f6fa}
+    .meta{color:var(--muted);font-size:13px;margin-top:10px}
+    .row{display:flex;gap:12px;align-items:center}
+    .btn{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;color:white;font-weight:600;cursor:pointer}
+    .btn:focus{box-shadow:0 0 0 4px rgba(214,51,108,0.06)}
+    a.link{color:inherit;text-decoration:underline}
+    /* Top nav */
+    nav.topnav{display:flex;gap:12px;align-items:center}
+    nav.topnav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px}
+    /* Make nav links more visible even when overlay is shown */
+    nav.topnav a, nav.topnav a.link{color:#f0f6fa}
+    nav.topnav a:hover{color:#fff;background:rgba(255,255,255,0.02)}
+    nav.topnav a.active{color:#fff;font-weight:600}
+    /* Details / poem control */
+    details.poem-details{cursor:default}
+    details.poem-details summary{font-size:1rem;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);list-style:none;cursor:pointer;margin:0}
+    details.poem-details{margin:6px 0}
+    .poem{margin:0}
+    details.poem-details[open] summary{background:rgba(214,51,108,0.06)}
+    footer{color:var(--muted);font-size:13px;text-align:center;padding:8px}
+
+    /* Password overlay (accessible) */
+    #overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.7),rgba(2,6,23,0.9));backdrop-filter:blur(4px);z-index:9999}
+    .prompt{width:420px;max-width:94%;padding:26px;border-radius:var(--radius);background:var(--card);box-shadow:0 20px 60px rgba(2,6,23,0.7);text-align:center}
+    .prompt label{display:block;text-align:left;font-size:14px;margin-bottom:6px;color:var(--muted)}
+    .prompt input{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:var(--glass);color:inherit;margin-top:6px}
+    .prompt input:focus{box-shadow:0 0 0 4px rgba(214,51,108,0.06);border-color:rgba(214,51,108,0.35)}
+    .hint{color:var(--muted);font-size:13px;margin-top:8px}
+    .err{color:#ffb3c7;margin-top:10px;min-height:1.2em}
+    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+    nav{display:flex;gap:10px}
+    @media(min-width:900px){body{padding:64px}}
+    @media(max-width:480px){.prompt{width:92%;padding:18px}}
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <div id="overlay">
+    <div class="prompt card" role="dialog" aria-modal="true" aria-labelledby="prompt-title">
+      <h2 id="prompt-title">Enter passphrase to view</h2>
+      <div class="hint" id="prompt-hint">This page is protected — enter the passphrase.</div>
+      <label for="pw" class="sr-only">Passphrase</label>
+      <input id="pw" type="password" placeholder="Type passphrase" aria-label="passphrase" aria-describedby="prompt-hint" />
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:center">
+        <button id="openBtn" class="btn">Unlock</button>
+      </div>
+      <div id="err" class="err" role="alert" aria-live="assertive"></div>
+      <div class="meta" style="margin-top:12px">Note: This is a client-side passphrase (hard-coded). It is not secure for real secrets.</div>
+    </div>
+  </div>
+
+  <main id="main" class="wrap" role="main">
+    <header>
+      <div class="heart">❤</div>
+      <div>
+        <h1>to my queen</h1>
+        <div class="meta">A small poetic page for Marwa — two poems and a link to photos</div>
+      </div>
+      <nav class="topnav" style="margin-left:auto">
+        <a class="link" href="index.html">Home</a>
+        <a class="link" href="about.html">About</a>
+        <a href="about.html" class="btn" style="margin-left:12px;">Photos & English poem</a>
+        <button id="togglePoems" class="btn" style="margin-left:12px; background:#6d6f7a;border:0;">Minimize poems</button>
+      </nav>
+    </header>
+    <!-- Top hero CTA to navigate to About (photos) -->
+    <div class="card" style="margin-top:12px;position:relative;z-index:10001;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="font-weight:700">Photos, ring, and an English poem</div>
+        <a href="about.html" class="btn" style="margin-left:auto;">Go to photos & English poem</a>
+      </div>
+    </div>
+    <!-- helper removed from header; helper moved to bottom of page so users see poems first -->
+
+    <section class="card">
+      <details class="poem-details" open>
+        <summary><strong>القصيدة 1 — رومانسي</strong></summary>
+        <div class="poem" dir="rtl" lang="ar">
+      يا مروى…
+      يا سِحرَ عينينِ إذا أطلّا، هدأَ الليلُ واستقامَ الهوى
+      وكأنّكِ نسمةُ فجرٍ تمسحُ عن القلبِ ما أثقلهُ التعبُ والضنى
+      يا مروى…
+      إن مرَّ طيفُكِ في خاطري، ازدهرتِ الروحُ من غيرِ سبب
+      وكأنّ الدنيا تُعيد ترتيبها، لتمنحني منكِ قُربًا أحب
+      يا مروى…
+      ما قلتُ يومًا إنّي عاشق، لكن كُلَّما ذكرتُ اسمكِ، انحنى القلبُ خاشعًا لهدوئه العذب
+      يا مروى…
+      إن سألوكِ يومًا عمّن أحبّكِ، فـقولي: هو الذي غيَّرهُ حضورُها، وما عاد يرى في النساءِ إلا مروى
+        </div>
+      </details>
+    </section>
+    <!-- helper removed: the poetry is shown directly -->
+
+    <section class="card">
+      <details class="poem-details" open>
+        <summary><strong>القصيدة 2 — عيد ميلاد</strong></summary>
+        <div class="poem" dir="rtl" lang="ar">
+      سنة حلوة يا مروى
+      يا ضحكة تملا الدنيا نور
+      يا نسمة تهدي للقلب دفى
+      وتخلّي الأيام تزهر حضور
+      سنة جديدة وكلها فرح
+      خطواتك فيها ورد وطيب
+      وحلمك يكبر يوم بعد يوم
+      وقلبك دايمًا يبقى نصيب
+      يا مروى…
+      يا بهجة تمشي بين الناس
+      الله يجعل عامك هنا
+      ويزيدك توفيق بكل قياس
+      سنة حلوة عليك بكل اللغات
+      بس بقلبي… أحلى سنة لمروى.
+
+        </div>
+      </details>
+    </section>
+    <!-- helper removed: short offering line removed -->
+
+    <!-- Top hero CTA moved to header area (see below) -->
+
+    
+    <footer class="card">Made with care — to my queen ❤</footer>
+  </main>
+
+  <script>
+    // -------------------------------------------
+    // PASSWORD (hard-coded, not changeable via UI)
+    // -------------------------------------------
+    const PASSWORD = "mYQueen2025!"; // <-- Non-changeable passphrase (hard-coded in the file)
+
+    const overlay = document.getElementById('overlay');
+    const pwInput = document.getElementById('pw');
+    const err = document.getElementById('err');
+    const openBtn = document.getElementById('openBtn');
+
+    function unlock(){
+      const val = pwInput.value || '';
+      if(val === PASSWORD){
+        overlay.style.display = 'none';
+        pwInput.value = '';
+      } else {
+        err.textContent = 'Incorrect passphrase.';
+      }
+    }
+
+    // Clear error state when user edits the input
+    pwInput.addEventListener('input', ()=>{ if(err.textContent) err.textContent = ''; });
+
+    openBtn.addEventListener('click', unlock);
+    pwInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') unlock(); });
+
+    // focus on password input when overlay is shown
+    pwInput.focus();
+
+    // Toggle minimize/expand for all poems
+    const toggleBtn = document.getElementById('togglePoems');
+    if(toggleBtn){
+      toggleBtn.addEventListener('click', ()=>{
+        const details = document.querySelectorAll('details.poem-details');
+        const allOpen = Array.from(details).every(d => d.open);
+        details.forEach(d => d.open = !allOpen);
+        toggleBtn.textContent = allOpen ? 'Expand poems' : 'Minimize poems';
+      });
+    }
+
+    // Optional: remember in session (not persistent across tabs)
+    // We keep it minimal and client-side only.
+  </script>
+</body>
+</html>
